@@ -8,11 +8,12 @@ from utils.constants import Constants
 
 class GenerateReport:
 
-    def __init__(self, oracle_col, adp_col, output_sheet_name, output_filename):
+    def __init__(self, oracle_col, adp_col, output_sheet_name, output_filename, adp_report):
         self.oracle_col = oracle_col
         self.adp_col = adp_col
         self.output_sheet_name = output_sheet_name
         self.output_file_name = output_filename
+        self.adp_report = adp_report
 
     # read oracle report
     def read_oracle_file(self):
@@ -31,7 +32,7 @@ class GenerateReport:
     # read adp report
     def read_adp_file(self):
         adp_report = pd.read_excel(
-            str(Constants.ADP_REPORT),
+            str(self.adp_report),  # there are 2 different adp files one for daily and one for bi-weekly
             usecols=[
                 Constants.PAYROLL_NAME,
                 Constants.UNIQUE_COLUMN,
