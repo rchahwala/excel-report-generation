@@ -106,6 +106,7 @@ class GenerateReport:
                 na_rep=int(0)
             )
 
+
         # with pd.ExcelWriter(self.output_file_name, engine='xlsxwriter') as writer:
         #     # Convert the dataframe to an XlsxWriter Excel object.
         #     df.to_excel(writer, sheet_name='Sheet1', index=False)

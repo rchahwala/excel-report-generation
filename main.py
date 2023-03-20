@@ -7,9 +7,6 @@ from models.generate_report import GenerateReport
 from utils.constants import Constants
 from PyInquirer import prompt
 
-
-
-
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
 
@@ -57,7 +54,8 @@ if __name__ == '__main__':
                 # if idx == 1:
                 #     exit(0)
 
-                print(f"Processing HCM Excel column: {report['oracle_col']} && CSV Register Excel column: {report['csv_register_col']}")
+                print(
+                    f"Processing HCM Excel column: {report['oracle_col']} && CSV Register Excel column: {report['csv_register_col']}")
                 reportObj = GenerateReport(
                     oracle_col=report['oracle_col'],
                     adp_col=report['csv_register_col'],
@@ -66,36 +64,50 @@ if __name__ == '__main__':
                     adp_report=Constants.CSV_REG_REPORT
 
                 )
+
                 reportObj.generate_report()
-                print(f"Sheet generated with sheet name: {report['output_sheet_name']} \n\n\n")
+
+                print(f"Sheet generated with sheet name: {report['output_sheet_name']} \n \n \n")
 
             print("CSV Register Recon Excel Successfully Generated.")
 
     if selection['Report'] == DAILY:
-        print("\n")
-        print(f"Okay got it! Running {DAILY} report. "
-              f"Your patient will be test here. Please drink some water and relax"
-              )
-        print("\n")
-        # create the output file with today's date'
-        today = datetime.datetime.now().strftime('%m_%d_%Y')
-        output_file_name = f"{Constants.OUTPUT_REPORT_PATH}/output_{today}.xlsx"
-        print("\n")
 
-        for idx, report in enumerate(Constants.REPORT_TYPES):
-            if idx == 2:
-                exit(0)
+        # check if HCM Excel is present in the destination folder
+        hcm_excel_is_present = GenerateReport.is_file_present(
+            Constants.ORACLE_REPORT
+        )
 
-            print(report['oracle_col'])
-            reportObj = GenerateReport(
-                oracle_col=report['oracle_col'],
-                adp_col=report['adp_col'],
-                output_sheet_name=report['output_sheet_name'],
-                output_filename=output_file_name,
-                adp_report=Constants.ADP_REPORT
-            )
-            reportObj.generate_report()
-            print(f"Sheet generated with sheet name: {report['output_sheet_name']}")
+        # check if HCM Excel is present in the destination folder
+        adp_excel_is_present = GenerateReport.is_file_present(
+            Constants.ADP_REPORT
+        )
+
+        if hcm_excel_is_present and adp_excel_is_present:
+
+            print(f"Next, your patient will be tested now. Please drink some water and relax \n")
+
+            # create the output file with today's date'
+            today = datetime.datetime.now().strftime('%m_%d_%Y')
+            output_file_name = f"{Constants.OUTPUT_REPORT_PATH}/daily_report/output_{today}.xlsx"
             print("\n")
 
-        print("File Recon Successfully completed")
+            for idx, report in enumerate(Constants.REPORT_TYPES):
+                # if idx == 2:
+                #     exit(0)
+
+                print(f"Processing HCM Excel column: {report['oracle_col']} && ADP Excel column: {report['adp_col']}")
+
+                reportObj = GenerateReport(
+                    oracle_col=report['oracle_col'],
+                    adp_col=report['adp_col'],
+                    output_sheet_name=report['output_sheet_name'],
+                    output_filename=output_file_name,
+                    adp_report=Constants.ADP_REPORT
+                )
+
+                reportObj.generate_report()
+
+                print(f"Sheet generated with sheet name: {report['output_sheet_name']} \n \n \n")
+
+        print("Daily Recon Excel Successfully Generated.")
