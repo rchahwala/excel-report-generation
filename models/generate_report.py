@@ -43,6 +43,17 @@ class GenerateReport:
         )
         return adp_report
 
+    # method to check is given file is present in the destination folder
+    @staticmethod
+    def is_file_present(file_name):
+        # check if file is present
+        if not os.path.exists(file_name):
+            print(f"Oh looks like {file_name} is not present in the destination folder. Please do the needful. \n")
+            exit('Bye Bye \n')
+        else:
+            print(f"Great News! {file_name} is present as expected. \n")
+            return True
+
     # generate report
     def generate_report(self):
         # write to the output file
@@ -62,6 +73,18 @@ class GenerateReport:
         # create data frame
         df = pd.DataFrame(data=v_lookup)
 
+        # Create index on the unique column
+        df = df.set_index(Constants.UNIQUE_COLUMN)
+
+        # replace NaN values with 0 for HCM column
+        df[self.oracle_col] = df[self.oracle_col].fillna(0)
+
+        # replace NaN values with 0 for ADP column
+        df[self.adp_col] = df[self.adp_col].fillna(0)
+
+        # convert all values to numeric values
+        df[[self.oracle_col, self.adp_col]] = df[[self.oracle_col, self.adp_col]].apply(pd.to_numeric)
+
         # get delta
         df[Constants.DELTA_COL] = df[self.oracle_col] - df[self.adp_col]
 
@@ -69,7 +92,7 @@ class GenerateReport:
         df.loc['Total'] = pd.Series(
             df.sum(),
             index=[
-                None,
+                0,
                 self.oracle_col,
                 self.adp_col,
                 Constants.DELTA_COL
