@@ -1,11 +1,5 @@
 # excel-report-generation
 
-### C:\Users\krana\AppData\Local\Programs\Python\Python39\python.exe C:\Users\krana\PycharmProjects\excel-report-generation\main.py 
-
-
-Steps for new report which includes daily and bi-weekly options
-
-
 
 # Bi-weekly CSV Register Report Steps
 * Step 1
