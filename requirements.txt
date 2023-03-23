@@ -4,3 +4,4 @@ openpyxl
 XlsxWriter~=3.0.9
 PyInquirer
 urllib3
+inquirer

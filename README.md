@@ -17,7 +17,7 @@
 * Step 5
 ```
 Run the below script in cmd prompt (cmd prompt is pinned in the bottom menu)
-C:\Users\krana\AppData\Local\Programs\Python\Python39\python.exe C:\Users\krana\PycharmProjects\excel-report-generation\main.py
+C:\Users\krana\AppData\Local\Programs\Python\Python310\python.exe C:\Users\krana\PycharmProjects\excel-report-generation\main.py
 ```
 
 * Step 6
@@ -35,7 +35,7 @@ C:\Users\krana\AppData\Local\Programs\Python\Python39\python.exe C:\Users\krana\
 * Step 3
 ```
 Run the below script in cmd prompt (cmd prompt is pinned in the bottom menu)
-C:\Users\krana\AppData\Local\Programs\Python\Python39\python.exe C:\Users\krana\PycharmProjects\excel-report-generation\main.py
+C:\Users\krana\AppData\Local\Programs\Python\Python310\python.exe C:\Users\krana\PycharmProjects\excel-report-generation\main.py
 ```
 
 * Step 4
