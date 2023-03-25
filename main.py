@@ -1,10 +1,16 @@
 from __future__ import print_function, unicode_literals
 import datetime
 from models.generate_report import GenerateReport
+from models.csv_register import CsvRegister
 from utils.constants import Constants
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
+
+    csv = CsvRegister()
+    csv.read_csv_register()
+
+    exit('existing......')
 
     DAILY = 'Daily Report'
     BI_WEEKLY = "Bi-weekly Audit Report"
@@ -113,5 +119,3 @@ if __name__ == '__main__':
         else:
             print('Type a number 1-3')
             continue
-
-
