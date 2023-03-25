@@ -40,6 +40,8 @@ class GenerateReport:
             header=0,
             sheet_name=Constants.ADP_SHEET_NAME,
         )
+        # line added to handle duplicate values in the csv register report
+        adp_report = adp_report[adp_report[self.adp_col].notnull()]
         return adp_report
 
     # method to check is given file is present in the destination folder
