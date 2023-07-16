@@ -6,8 +6,9 @@ from utils.constants import Constants
 
 
 class GenerateReport:
-
-    def __init__(self, oracle_col, adp_col, output_sheet_name, output_filename, adp_report):
+    def __init__(
+        self, oracle_col, adp_col, output_sheet_name, output_filename, adp_report
+    ):
         self.oracle_col = oracle_col
         self.adp_col = adp_col
         self.output_sheet_name = output_sheet_name
@@ -18,10 +19,7 @@ class GenerateReport:
     def read_oracle_file(self):
         oracle_report = pd.read_excel(
             str(Constants.ORACLE_REPORT),
-            usecols=[
-                Constants.UNIQUE_COLUMN,
-                self.oracle_col
-            ],
+            usecols=[Constants.UNIQUE_COLUMN, self.oracle_col],
             header=0,
             sheet_name=Constants.ORACLE_SHEET_NAME,
         )
@@ -31,12 +29,10 @@ class GenerateReport:
     # read adp report
     def read_adp_file(self):
         adp_report = pd.read_excel(
-            str(self.adp_report),  # there are 2 different adp files one for daily and one for bi-weekly
-            usecols=[
-                Constants.PAYROLL_NAME,
-                Constants.UNIQUE_COLUMN,
-                self.adp_col
-            ],
+            str(
+                self.adp_report
+            ),  # there are 2 different adp files one for daily and one for bi-weekly
+            usecols=[Constants.PAYROLL_NAME, Constants.UNIQUE_COLUMN, self.adp_col],
             header=0,
             sheet_name=Constants.ADP_SHEET_NAME,
         )
@@ -49,8 +45,10 @@ class GenerateReport:
     def is_file_present(file_name):
         # check if file is present
         if not os.path.exists(file_name):
-            print(f"Oh looks like {file_name} is not present in the destination folder. Please do the needful. \n")
-            exit('Bye Bye \n')
+            print(
+                f"Oh looks like {file_name} is not present in the destination folder. Please do the needful. \n"
+            )
+            exit("Bye Bye \n")
         else:
             print(f"Great News! {file_name} is present as expected. \n")
             return True
@@ -68,7 +66,7 @@ class GenerateReport:
             self.read_adp_file(),
             self.read_oracle_file(),
             on=Constants.UNIQUE_COLUMN,
-            how=Constants.V_LOOKUP_ACTION
+            how=Constants.V_LOOKUP_ACTION,
         )
 
         # create data frame
@@ -84,29 +82,30 @@ class GenerateReport:
         df[self.adp_col] = df[self.adp_col].fillna(0)
 
         # convert all values to numeric values
-        df[[self.oracle_col, self.adp_col]] = df[[self.oracle_col, self.adp_col]].apply(pd.to_numeric)
+        df[[self.oracle_col, self.adp_col]] = df[[self.oracle_col, self.adp_col]].apply(
+            pd.to_numeric
+        )
 
         # get delta
         df[Constants.DELTA_COL] = df[self.oracle_col] - df[self.adp_col]
 
+        df[Constants.DELTA_COL].apply(pd.to_numeric)
+
         # add total and delta
-        df.loc['Total'] = pd.Series(
-            df.sum(),
-            index=[
-                0,
-                self.oracle_col,
-                self.adp_col,
-                Constants.DELTA_COL
-            ]
+        df.loc["Total"] = pd.Series(
+            df.sum(numeric_only=True),
+            index=[0, self.oracle_col, self.adp_col, Constants.DELTA_COL],
         )
 
-        with pd.ExcelWriter(self.output_file_name, engine='openpyxl', mode='a') as writer:
+        with pd.ExcelWriter(
+            self.output_file_name, engine="openpyxl", mode="a"
+        ) as writer:
             df.to_excel(
                 writer,
                 sheet_name=self.output_sheet_name,
-                na_rep=int(0)
+                na_rep=int(0),
+                freeze_panes=(1, 1),
             )
-
 
         # with pd.ExcelWriter(self.output_file_name, engine='xlsxwriter') as writer:
         #     # Convert the dataframe to an XlsxWriter Excel object.
